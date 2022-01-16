@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
 import { Profile } from 'src/auth/profile.decorator';
@@ -10,6 +10,7 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
     constructor(private usersService: UsersService, private authService: AuthService) { }
+
 
     @UseInterceptors(ClassSerializerInterceptor)
     @Post()
@@ -23,5 +24,12 @@ export class UsersController {
             user,
             message: 'Usuario criado com sucesso'
         }
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @Get()
+    async listUsers() {
+        const users = await this.usersService.findAllUsers()
+        return users
     }
 }
