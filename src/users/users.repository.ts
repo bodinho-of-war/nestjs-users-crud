@@ -7,6 +7,7 @@ import { CredentialsDto } from "src/auth/dto/credentials.dto";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
+
     async createUser(createUserDto: CreateUserDto): Promise<User> {
         const { name, email, password, profiles } = createUserDto
 
