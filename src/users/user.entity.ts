@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'users' })
@@ -38,4 +39,9 @@ export class User extends BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date
+
+    async checkPassword(password: string): Promise<boolean> {
+        const hashed = await hash(password, this.salt);
+        return hashed === this.password;
+    }
 }
