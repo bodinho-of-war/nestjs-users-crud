@@ -31,11 +31,11 @@ export class AuthService {
         const user = await this.userRepository.checkCredentials(credentialsDto);
 
         if (user === null) {
-            throw new UnauthorizedException('Credenciais inválidas');
+            throw new UnauthorizedException('Usuário e/ou senha inválidos');
         }
 
         const token = await this.generateToken(user)
 
-        return { token }
+        return { user, token }
     }
 }

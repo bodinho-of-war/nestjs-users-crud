@@ -2,7 +2,6 @@ import { EntityRepository, Repository } from "typeorm";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { User } from "./user.entity";
 import { genSalt, hash } from 'bcrypt'
-import * as crypto from 'crypto'
 import { ConflictException, InternalServerErrorException, Logger } from "@nestjs/common";
 import { CredentialsDto } from "src/auth/dto/credentials.dto";
 
@@ -16,7 +15,6 @@ export class UserRepository extends Repository<User> {
         user.email = email
         user.profiles = profiles
         user.status = true
-        user.confirmationToken = crypto.randomBytes(32).toString('hex')
         user.salt = await genSalt()
         user.password = await this.hashPassword(password, user.salt)
         try {

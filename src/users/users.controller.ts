@@ -1,5 +1,6 @@
-import { Body, Controller, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
 import { Profile } from 'src/auth/profile.decorator';
 import { ProfilesGuard } from 'src/auth/profiles.guard';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -8,8 +9,9 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-    constructor(private usersService: UsersService) { }
+    constructor(private usersService: UsersService, private authService: AuthService) { }
 
+    @UseInterceptors(ClassSerializerInterceptor)
     @Post()
     @Profile({ name: 'admin' })
     @UseGuards(AuthGuard(), ProfilesGuard)

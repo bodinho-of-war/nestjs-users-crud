@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Post, Req, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 import { User } from 'src/users/user.entity';
@@ -20,6 +20,7 @@ export class AuthController {
         };
     }
 
+    @UseInterceptors(ClassSerializerInterceptor)
     @Post('/signin')
     async signIn(
         @Body(ValidationPipe) credentiaslsDto: CredentialsDto,
