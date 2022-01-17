@@ -4,7 +4,7 @@ import { AuthService } from 'src/components/auth/auth.service';
 import { Profile } from 'src/components/auth/profile.decorator';
 import { ProfilesGuard } from 'src/components/auth/profiles.guard';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { User } from './entity/user.entity';
+import { UserEntity } from './entity/user.entity';
 import { UserServiceInterface } from './interface/user.service.interface';
 
 @Controller('users')
@@ -23,7 +23,7 @@ export class UserController {
     @UseGuards(AuthGuard(), ProfilesGuard)
     async create(
         @Body() userDto: CreateUserDto
-    ): Promise<User> {
+    ): Promise<UserEntity> {
         const user = await this.usersService.create(userDto)
         return user
     }

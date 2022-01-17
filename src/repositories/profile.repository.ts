@@ -2,19 +2,19 @@ import { BaseAbstractRepository } from './base/base.abstract.repository';
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Profile } from '../components/profile/entity/profile.entity';
+import { ProfileEntity } from '../components/profile/entity/profile.entity';
 import { ProfileRepositoryInterface } from '../components/profile/interface/profile.repository.interface';
 
 @Injectable()
-export class ProfileRepository extends BaseAbstractRepository<Profile> implements ProfileRepositoryInterface {
+export class ProfileRepository extends BaseAbstractRepository<ProfileEntity> implements ProfileRepositoryInterface {
     constructor(
-        @InjectRepository(Profile)
-        private readonly profileRepository: Repository<Profile>
+        @InjectRepository(ProfileEntity)
+        private readonly profileRepository: Repository<ProfileEntity>
     ) {
         super(profileRepository)
     }
 
-    async create(profile: Profile): Promise<Profile> {
+    async create(profile: ProfileEntity): Promise<ProfileEntity> {
         try {
             const createdProfile = await super.create(profile)
             return createdProfile

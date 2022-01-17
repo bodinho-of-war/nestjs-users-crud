@@ -1,20 +1,20 @@
 import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../components/user/entity/user.entity";
+import { UserEntity } from "../components/user/entity/user.entity";
 import { UserRepositoryInterface } from "../components/user/interface/user.repository.interface";
 import { Repository } from "typeorm";
 import { BaseAbstractRepository } from "./base/base.abstract.repository";
 
 @Injectable()
-export class UserRepository extends BaseAbstractRepository<User> implements UserRepositoryInterface {
+export class UserRepository extends BaseAbstractRepository<UserEntity> implements UserRepositoryInterface {
     constructor(
-        @InjectRepository(User)
-        private readonly usersRepository: Repository<User>
+        @InjectRepository(UserEntity)
+        private readonly usersRepository: Repository<UserEntity>
     ) {
         super(usersRepository)
     }
 
-    async create(user: User) {
+    async create(user: UserEntity) {
         try {
             const createdUser = await super.create(user)
             delete createdUser.password

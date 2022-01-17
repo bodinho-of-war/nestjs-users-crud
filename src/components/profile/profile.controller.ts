@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Inject, Injectable, Post } from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-profile.dto';
-import { Profile } from './entity/profile.entity';
+import { ProfileEntity } from './entity/profile.entity';
 import { ProfileServiceInterface } from './interface/profile.service.interface';
 
 @Injectable()
@@ -14,13 +14,13 @@ export class ProfileController {
     @Post()
     async createProfile(
         @Body() createProfileDto: CreateProfileDto
-    ): Promise<Profile> {
+    ): Promise<ProfileEntity> {
         const profile = await this.profilesService.create(createProfileDto)
         return profile
     }
 
     @Get()
-    async listProfiles(): Promise<Profile[]> {
+    async listProfiles(): Promise<ProfileEntity[]> {
         const profiles = await this.profilesService.findAll()
         return profiles
     }

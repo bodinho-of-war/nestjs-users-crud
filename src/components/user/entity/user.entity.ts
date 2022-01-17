@@ -4,7 +4,7 @@ import { Exclude, Expose } from 'class-transformer'
 
 @Entity({ name: 'users' })
 @Unique(['email'])
-export class User extends BaseEntity {
+export class UserEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     id: string
