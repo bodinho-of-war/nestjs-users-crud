@@ -10,11 +10,20 @@ import { UserService } from '../user/user.service';
 import { UserRepository } from 'src/repositories/user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user/entity/user.entity';
+import { ProfileRepository } from 'src/repositories/profile.repository';
+import { ProfileEntity } from '../profile/entity/profile.entity';
+import { ProfileModule } from '../profile/profiles.module';
+
+
+const profileRepoInterface = {
+    provide: 'ProfileRepositoryInterface',
+    useClass: ProfileRepository
+}
 
 @Module({
     imports: [
         ConfigModule.forRoot(),
-        TypeOrmModule.forFeature([UserEntity]),
+        TypeOrmModule.forFeature([UserEntity, ProfileEntity]),
         PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.register({
             secret: process.env.JWT_SECRET,
@@ -22,7 +31,7 @@ import { UserEntity } from '../user/entity/user.entity';
                 expiresIn: 18000,
             }
         }),
-        forwardRef(() => UserModule)
+        forwardRef(() => UserModule),
     ],
     controllers: [AuthController],
     providers: [
@@ -35,7 +44,9 @@ import { UserEntity } from '../user/entity/user.entity';
         {
             provide: 'UserServiceInterface',
             useClass: UserService
-        }
+        },
+        ProfileEntity,
+        profileRepoInterface
     ],
     exports: [JwtStrategy, PassportModule, AuthService]
 })

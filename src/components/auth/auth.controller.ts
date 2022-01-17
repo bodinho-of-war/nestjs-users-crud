@@ -2,6 +2,7 @@ import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseGuards, Use
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from 'src/components/user/dtos/create-user.dto';
 import { UserEntity } from 'src/components/user/entity/user.entity';
+import { ReturnUserDto } from '../user/dtos/return-user.dto';
 import { AuthService } from './auth.service';
 import { CredentialsDto } from './dto/credentials.dto';
 import { GetUser } from './get-user.decorator';
@@ -24,8 +25,10 @@ export class AuthController {
     @Post('/signin')
     async signIn(
         @Body() credentiaslsDto: CredentialsDto,
-    ): Promise<{ token: string }> {
-        return await this.authService.signIn(credentiaslsDto);
+    ): Promise<ReturnUserDto> {
+        const user = await this.authService.signIn(credentiaslsDto);
+        const returnUser = new ReturnUserDto(user)
+        return returnUser
     }
 
     @Get('/me')

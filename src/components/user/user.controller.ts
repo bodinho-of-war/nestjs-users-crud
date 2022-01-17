@@ -4,6 +4,7 @@ import { AuthService } from 'src/components/auth/auth.service';
 import { Profile } from 'src/components/auth/profile.decorator';
 import { ProfilesGuard } from 'src/components/auth/profiles.guard';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { ReturnUserDto } from './dtos/return-user.dto';
 import { UserEntity } from './entity/user.entity';
 import { UserServiceInterface } from './interface/user.service.interface';
 
@@ -20,12 +21,13 @@ export class UserController {
     @UseInterceptors(ClassSerializerInterceptor)
     @Post()
     // @Profile({ name: 'admin' })
-    @UseGuards(AuthGuard(), ProfilesGuard)
+    // @UseGuards(AuthGuard(), ProfilesGuard)
     async create(
         @Body() userDto: CreateUserDto
-    ): Promise<UserEntity> {
+    ): Promise<ReturnUserDto> {
         const user = await this.usersService.create(userDto)
-        return user
+        const token = await this.authService.generateToken(user)
+        return new ReturnUserDto({ ...user, token })
     }
 
     @UseInterceptors(ClassSerializerInterceptor)

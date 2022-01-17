@@ -1,5 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CredentialsDto } from '../auth/dto/credentials.dto';
+import { ProfileEntity } from '../profile/entity/profile.entity';
+import { ProfileRepositoryInterface } from '../profile/interface/profile.repository.interface';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserEntity } from './entity/user.entity';
 import { UserRepositoryInterface } from './interface/user.repository.interface';
@@ -10,6 +12,8 @@ export class UserService implements UserServiceInterface {
     constructor(
         @Inject('UserRepositoryInterface')
         private readonly userRepository: UserRepositoryInterface,
+        @Inject('ProfileRepositoryInterface')
+        private readonly profileRepository: ProfileRepositoryInterface
     ) { }
 
     async create(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -17,7 +21,8 @@ export class UserService implements UserServiceInterface {
         user.email = createUserDto.email
         user.name = createUserDto.name
         user.password = createUserDto.password
-        user.profiles = createUserDto.profiles
+        const profiles = await this.profileRepository.findAll()
+        user.profiles = profiles.filter((profile: ProfileEntity) => createUserDto.profiles.find((item: { name: string }) => profile.name === item.name))
         return this.userRepository.create(user)
     }
 

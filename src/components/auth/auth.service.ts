@@ -35,6 +35,6 @@ export class AuthService {
 
         const token = await this.generateToken(user)
 
-        return { user, token }
+        return { ...user, token }
     }
 }

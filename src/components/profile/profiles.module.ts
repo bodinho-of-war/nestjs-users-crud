@@ -3,23 +3,23 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProfileEntity } from './entity/profile.entity';
 import { ProfileController } from './profile.controller';
 import { ProfileRepository } from '../../repositories/profile.repository';
-import { ProfileRepositoryInterface } from './interface/profile.repository.interface';
 import { ProfileService } from './profile.service';
-import { ProfileServiceInterface } from './interface/profile.service.interface';
+
+const profileRepoInterface = {
+    provide: 'ProfileRepositoryInterface',
+    useClass: ProfileRepository,
+}
+
+const profileServInterface = {
+    provide: 'ProfileServiceInterface',
+    useClass: ProfileService,
+}
 
 @Module({
     imports: [TypeOrmModule.forFeature([ProfileEntity])],
-    providers: [
-        {
-            provide: 'ProfileRepositoryInterface',
-            useClass: ProfileRepository,
-        },
-        {
-            provide: 'ProfileServiceInterface',
-            useClass: ProfileService,
-        },
-    ],
+    providers: [ProfileEntity, profileRepoInterface, profileServInterface],
     controllers: [ProfileController],
+    exports: [ProfileEntity, profileServInterface, profileRepoInterface]
 })
 export class ProfileModule {
 }
