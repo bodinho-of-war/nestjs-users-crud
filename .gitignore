@@ -1,5 +1,7 @@
+# cypto key
+nestjs_key
+
 # Enviorement variables
-.env
 scripts
 
 # compiled output
