@@ -7,6 +7,10 @@ export abstract class BaseAbstractRepository<T> implements BaseInterfaceReposito
 
     constructor(private entity: Repository<T>) { }
 
+    public async update(data: T | any): Promise<T> {
+        return await this.entity.save(data)
+    }
+
     public async create(data: T | any): Promise<T> {
         return await this.entity.save(data)
     }

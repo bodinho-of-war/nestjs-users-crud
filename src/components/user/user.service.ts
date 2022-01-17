@@ -44,6 +44,11 @@ export class UserService implements UserServiceInterface {
         }
     }
 
+    async registerLogin(user: UserEntity): Promise<UserEntity> {
+        user.lastLogin = new Date()
+        return await this.userRepository.update(user)
+    }
+
     async findAll(): Promise<UserEntity[]> {
         const users = await this.userRepository.findAll()
         return users

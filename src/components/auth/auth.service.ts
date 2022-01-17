@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/components/user/dtos/create-user.dto';
 import { UserEntity } from 'src/components/user/entity/user.entity';
@@ -33,8 +33,9 @@ export class AuthService {
             throw new UnauthorizedException('Usuário e/ou senha inválidos');
         }
 
+        const returnUser = JSON.parse(JSON.stringify(user))
         const token = await this.generateToken(user)
-
-        return { ...user, token }
+        await this.userService.registerLogin(user)
+        return { token, ...returnUser }
     }
 }

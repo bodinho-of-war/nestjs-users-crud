@@ -1,5 +1,6 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpCode, Post, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Response } from 'express';
 import { CreateUserDto } from 'src/components/user/dtos/create-user.dto';
 import { UserEntity } from 'src/components/user/entity/user.entity';
 import { ReturnUserDto } from '../user/dtos/return-user.dto';
@@ -23,13 +24,15 @@ export class AuthController {
 
     @UseInterceptors(ClassSerializerInterceptor)
     @Post('/signin')
+    @HttpCode(200)
     async signIn(
-        @Body() credentiaslsDto: CredentialsDto,
+        @Body() credentiaslsDto: CredentialsDto
     ): Promise<ReturnUserDto> {
         const user = await this.authService.signIn(credentiaslsDto);
         const returnUser = new ReturnUserDto(user)
         return returnUser
     }
+
 
     @Get('/me')
     @UseGuards(AuthGuard())

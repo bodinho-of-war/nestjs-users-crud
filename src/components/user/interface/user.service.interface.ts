@@ -6,4 +6,5 @@ export interface UserServiceInterface {
     create(userDto: CreateUserDto): Promise<UserEntity>
     findAll(): Promise<UserEntity[]>
     checkCredentials(credentialsDto: CredentialsDto): Promise<UserEntity>
+    registerLogin(user: UserEntity): Promise<UserEntity>
 }
