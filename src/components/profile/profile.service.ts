@@ -11,8 +11,8 @@ export class ProfileService {
     ) { }
 
     async create(profileDto: CreateProfileDto): Promise<ProfileEntity> {
-        const found = await this.profileRepository.findAll()
-        if (found.length > 0) throw new ConflictException('Perfil já existente')
+        const found = await this.profileRepository.findByCondition({ name: profileDto.name })
+        if (found) throw new ConflictException('Perfil já existente')
         const profile = await this.profileRepository.create(profileDto)
         return profile
     }
