@@ -1,6 +1,7 @@
 import { genSalt, hash, hashSync } from "bcrypt";
-import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { Exclude, Expose } from 'class-transformer'
+import { ProfileEntity } from "src/components/profile/entity/profile.entity";
 
 @Entity({ name: 'users' })
 @Unique(['email'])
@@ -18,9 +19,6 @@ export class UserEntity extends BaseEntity {
     @Column({ type: 'varchar', length: 100 })
     @Exclude()
     password: string
-
-    @Column({ type: 'jsonb', nullable: true })
-    profiles: object[]
 
     @Column({ nullable: false, default: true })
     @Exclude()
@@ -41,6 +39,10 @@ export class UserEntity extends BaseEntity {
     @UpdateDateColumn()
     @Expose({ name: 'modified' })
     updatedAt: Date
+
+    @ManyToMany(() => ProfileEntity)
+    @JoinTable()
+    profiles: ProfileEntity[]
 
     @BeforeInsert()
     async hashPassword() {

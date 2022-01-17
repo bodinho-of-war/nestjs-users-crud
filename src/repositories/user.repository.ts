@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "../components/user/entity/user.entity";
 import { UserRepositoryInterface } from "../components/user/interface/user.repository.interface";
@@ -21,6 +21,7 @@ export class UserRepository extends BaseAbstractRepository<UserEntity> implement
             delete createdUser.salt
             return createdUser
         } catch (error) {
+            Logger.error(error)
             if (error.code.toString() === '23505') {
                 throw new ConflictException('E-mail já existente');
             } else {

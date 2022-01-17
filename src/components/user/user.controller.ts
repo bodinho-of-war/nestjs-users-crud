@@ -19,7 +19,7 @@ export class UserController {
 
     @UseInterceptors(ClassSerializerInterceptor)
     @Post()
-    @Profile({ name: 'admin' })
+    // @Profile({ name: 'admin' })
     @UseGuards(AuthGuard(), ProfilesGuard)
     async create(
         @Body() userDto: CreateUserDto

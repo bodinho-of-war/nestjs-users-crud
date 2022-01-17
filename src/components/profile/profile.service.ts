@@ -18,7 +18,7 @@ export class ProfileService {
     }
 
 
-    async findAllProfiles(): Promise<ProfileEntity[]> {
+    async findAll(): Promise<ProfileEntity[]> {
         const profiles = await this.profileRepository.findAll()
         return profiles
     }

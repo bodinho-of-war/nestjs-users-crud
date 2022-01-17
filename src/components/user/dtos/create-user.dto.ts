@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from "class-validator"
+import { ProfileEntity } from "src/components/profile/entity/profile.entity"
 
 export class CreateUserDto {
     @IsNotEmpty({
@@ -28,6 +29,8 @@ export class CreateUserDto {
     })
     password: string
 
-
-    profiles: object[]
+    @IsNotEmpty({
+        message: 'Informe um perfil'
+    })
+    profiles: ProfileEntity[]
 }
