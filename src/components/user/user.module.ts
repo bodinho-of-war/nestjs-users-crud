@@ -7,22 +7,29 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from 'src/components/auth/auth.module';
 import { UserRepository } from 'src/repositories/user.repository';
 
+const userRepoInterface = {
+    provide: 'UserRepositoryInterface',
+    useClass: UserRepository
+}
+
+const userServInterface = {
+    provide: 'UserServiceInterface',
+    useClass: UserService
+}
+
+const userEntity = {
+    provide: 'UserEntity',
+    useClass: UserEntity
+}
+
 @Module({
     imports: [
         TypeOrmModule.forFeature([UserEntity]),
         PassportModule.register({ defaultStrategy: 'jwt' }),
         forwardRef(() => AuthModule)
     ],
-    providers: [
-        {
-            provide: 'UserRepositoryInterface',
-            useClass: UserRepository
-        },
-        {
-            provide: 'UserServiceInterface',
-            useClass: UserService
-        },
-    ],
+    providers: [userRepoInterface, userServInterface, userEntity],
     controllers: [UserController],
+    exports: [userRepoInterface, userServInterface, userEntity]
 })
 export class UserModule { }

@@ -22,9 +22,7 @@ import { UserEntity } from '../user/entity/user.entity';
                 expiresIn: 18000,
             }
         }),
-        forwardRef(
-            () => UserModule
-        )
+        forwardRef(() => UserModule)
     ],
     controllers: [AuthController],
     providers: [
