@@ -22,7 +22,6 @@ export class AuthController {
         };
     }
 
-    @UseInterceptors(ClassSerializerInterceptor)
     @Post('/signin')
     @HttpCode(200)
     async signIn(
@@ -32,7 +31,6 @@ export class AuthController {
         const returnUser = new ReturnUserDto(user)
         return returnUser
     }
-
 
     @Get('/me')
     @UseGuards(AuthGuard())

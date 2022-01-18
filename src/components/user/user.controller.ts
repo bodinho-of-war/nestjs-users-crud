@@ -18,10 +18,9 @@ export class UserController {
     ) { }
 
 
-    @UseInterceptors(ClassSerializerInterceptor)
     @Post()
-    // @Profile({ name: 'admin' })
-    // @UseGuards(AuthGuard(), ProfilesGuard)
+    @Profile({ name: 'admin' })
+    @UseGuards(AuthGuard(), ProfilesGuard)
     async create(
         @Body() userDto: CreateUserDto
     ): Promise<ReturnUserDto> {
@@ -30,7 +29,6 @@ export class UserController {
         return new ReturnUserDto({ ...user, token })
     }
 
-    @UseInterceptors(ClassSerializerInterceptor)
     @Get()
     async listUsers() {
         const users = await this.usersService.findAll()
