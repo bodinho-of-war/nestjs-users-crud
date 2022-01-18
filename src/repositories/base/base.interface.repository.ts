@@ -9,7 +9,7 @@ export interface BaseInterfaceRepository<T> {
 
     findAll(): Promise<T[]>;
 
-    update(data: T | any): Promise<T>
+    updateOne(data: T | any): Promise<T>
 
     remove(id: string): Promise<DeleteResult>;
 

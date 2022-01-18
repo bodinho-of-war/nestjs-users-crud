@@ -8,7 +8,7 @@ import { ProfileServiceInterface } from './interface/profile.service.interface';
 export class ProfileController {
     constructor(
         @Inject('ProfileServiceInterface')
-        private profilesService: ProfileServiceInterface
+        private readonly profilesService: ProfileServiceInterface
     ) { }
 
     @Post()

@@ -17,8 +17,6 @@ export class UserRepository extends BaseAbstractRepository<UserEntity> implement
     async create(user: UserEntity) {
         try {
             const createdUser = await super.create(user)
-            delete createdUser.password
-            delete createdUser.salt
             return createdUser
         } catch (error) {
             Logger.error(error)

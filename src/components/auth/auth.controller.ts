@@ -1,6 +1,5 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpCode, Post, Res, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Response } from 'express';
 import { CreateUserDto } from 'src/components/user/dtos/create-user.dto';
 import { UserEntity } from 'src/components/user/entity/user.entity';
 import { ReturnUserDto } from '../user/dtos/return-user.dto';
@@ -10,7 +9,7 @@ import { GetUser } from './get-user.decorator';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) { }
+    constructor(private readonly authService: AuthService) { }
 
     @Post('/signup')
     async signUp(

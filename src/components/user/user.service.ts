@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
+import { Inject, Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CredentialsDto } from '../auth/dto/credentials.dto';
 import { ProfileEntity } from '../profile/entity/profile.entity';
 import { ProfileRepositoryInterface } from '../profile/interface/profile.repository.interface';
@@ -46,7 +46,7 @@ export class UserService implements UserServiceInterface {
 
     async registerLogin(user: UserEntity): Promise<UserEntity> {
         user.lastLogin = new Date()
-        return await this.userRepository.update(user)
+        return await this.userRepository.updateOne(user)
     }
 
     async findAll(): Promise<UserEntity[]> {

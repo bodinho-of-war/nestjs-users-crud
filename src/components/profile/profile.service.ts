@@ -7,7 +7,7 @@ import { ProfileRepositoryInterface } from './interface/profile.repository.inter
 export class ProfileService {
     constructor(
         @Inject('ProfileRepositoryInterface')
-        private profileRepository: ProfileRepositoryInterface
+        private readonly profileRepository: ProfileRepositoryInterface
     ) { }
 
     async create(profileDto: CreateProfileDto): Promise<ProfileEntity> {

@@ -1,5 +1,5 @@
 import { BaseAbstractRepository } from './base/base.abstract.repository';
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProfileEntity } from '../components/profile/entity/profile.entity';
@@ -19,6 +19,7 @@ export class ProfileRepository extends BaseAbstractRepository<ProfileEntity> imp
             const createdProfile = await super.create(profile)
             return createdProfile
         } catch (error) {
+            Logger.error(error)
             if (error.code.toString() === '23505') {
                 throw new ConflictException('Perfil já existente');
             } else {

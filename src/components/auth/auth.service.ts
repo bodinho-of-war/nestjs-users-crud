@@ -1,7 +1,8 @@
-import { Inject, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/components/user/dtos/create-user.dto';
 import { UserEntity } from 'src/components/user/entity/user.entity';
+import { UserRepositoryInterface } from '../user/interface/user.repository.interface';
 import { UserServiceInterface } from '../user/interface/user.service.interface';
 import { CredentialsDto } from './dto/credentials.dto';
 
@@ -9,8 +10,10 @@ import { CredentialsDto } from './dto/credentials.dto';
 export class AuthService {
     constructor(
         @Inject('UserServiceInterface')
-        private userService: UserServiceInterface,
-        private jwtService: JwtService
+        private readonly userService: UserServiceInterface,
+        @Inject('UserRepositoryInterface')
+        private readonly useRepository: UserRepositoryInterface,
+        private readonly jwtService: JwtService
     ) { }
 
     async signUp(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -32,10 +35,13 @@ export class AuthService {
         if (user === null) {
             throw new UnauthorizedException('Usuário e/ou senha inválidos');
         }
-
+        const { profiles } = (await this.useRepository.findWithRelations({
+            relations: ['profiles'],
+            where: { id: user.id }
+        }))[0]
         const returnUser = JSON.parse(JSON.stringify(user))
         const token = await this.generateToken(user)
         await this.userService.registerLogin(user)
-        return { token, ...returnUser }
+        return { token, profiles, ...returnUser }
     }
 }

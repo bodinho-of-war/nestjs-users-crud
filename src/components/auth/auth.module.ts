@@ -12,7 +12,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user/entity/user.entity';
 import { ProfileRepository } from 'src/repositories/profile.repository';
 import { ProfileEntity } from '../profile/entity/profile.entity';
-import { ProfileModule } from '../profile/profiles.module';
+
+
+const userRepoInterface = {
+    provide: 'UserRepositoryInterface',
+    useClass: UserRepository
+}
+
+const UserServInterface = {
+    provide: 'UserServiceInterface',
+    useClass: UserService
+}
 
 
 const profileRepoInterface = {
@@ -37,16 +47,10 @@ const profileRepoInterface = {
     providers: [
         AuthService,
         JwtStrategy,
-        {
-            provide: 'UserRepositoryInterface',
-            useClass: UserRepository
-        },
-        {
-            provide: 'UserServiceInterface',
-            useClass: UserService
-        },
         ProfileEntity,
-        profileRepoInterface
+        profileRepoInterface,
+        userRepoInterface,
+        UserServInterface,
     ],
     exports: [JwtStrategy, PassportModule, AuthService]
 })
