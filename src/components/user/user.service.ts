@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Logger, UnprocessableEntityException } from '@nestjs/common';
 import { CredentialsDto } from '../auth/dto/credentials.dto';
 import { ProfileEntity } from '../profile/entity/profile.entity';
 import { ProfileRepositoryInterface } from '../profile/interface/profile.repository.interface';
@@ -19,7 +19,7 @@ export class UserService implements UserServiceInterface {
     private async checkProfiles(profilesDto: { name: string }[]): Promise<ProfileEntity[]> {
         const profiles = await this.profileRepository.findAll()
         const foundProfiles = profiles.filter((profile: ProfileEntity) => profilesDto.find((item: { name: string }) => profile.name === item.name))
-        if (foundProfiles.length === 0) throw new BadRequestException('Nenhum perfil valido encontrado')
+        if (foundProfiles.length === 0) throw new UnprocessableEntityException('Nenhum perfil valido encontrado')
         return foundProfiles
     }
 
